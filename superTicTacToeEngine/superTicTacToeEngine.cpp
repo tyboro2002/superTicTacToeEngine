@@ -11,11 +11,20 @@ int main(){
 	//printOverlayedSubBoard(0b111000000, 0b000000111, 'X', 'O');
 	Game game;
 	MOVELIST moveList;
-	moveList.count = 0;
-	genLegalMoves(&game, X, &moveList);
-	genLegalMoves(&game, O, &moveList);
-	printMoveList(&moveList);
-	cout << "Size of a player: " << sizeof(Player) << endl;
-	cout << "size of a game: " << sizeof(Game) << endl;
+	Move move;
+	int moveIndex;
+	while (!(gameWon(&game, X) || gameWon(&game, O))) {
+		moveList.count = 0;
+		printBoard(&game);
+		genLegalMoves(&game, &moveList);
+		printMoveList(&moveList);
+		cout << "what move do you want to play" << endl;
+		cin >> moveIndex;
+		makeMove(&game, &moveList.moves[moveIndex]);
+	}
+
+	printBoard(&game);
+	//cout << "Size of a player: " << sizeof(Player) << endl;
+	//cout << "size of a game: " << sizeof(Game) << endl;
 	return 0;
 }

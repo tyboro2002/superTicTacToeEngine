@@ -65,6 +65,11 @@ struct MOVELIST {
 
 void printSubBoard(subBoard sub, char c);
 void printOverlayedSubBoard(subBoard subP1, subBoard subP2, char p1, char p2);
+void printBoard(Game* game);
 
 void printMoveList(MOVELIST* moveList);
 void genLegalMoves(Game* game, Symbol s, MOVELIST* moveList);
+void genLegalMoves(Game* game, MOVELIST* moveList);
+void makeMove(Game* game,Move* m);
+
+bool gameWon(Game* game, Symbol s);

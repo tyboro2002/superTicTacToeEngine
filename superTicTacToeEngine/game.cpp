@@ -157,6 +157,25 @@ bool checkWon(subBoard subp1, subBoard subp2, Symbol s) {
 	}
 }
 
+bool subSqGameOver(subBoard subp1, subBoard subp2) { return checkWon(subp1, subp2, X) || checkWon(subp1, subp2, O);}
+
+bool subSqWon(Game* game, SuperSquare sup) {
+	if (sup == A) return subSqGameOver(game->playerX.bord1, game->playerO.bord1);
+	if (sup == B) return subSqGameOver(game->playerX.bord2, game->playerO.bord2);
+	if (sup == C) return subSqGameOver(game->playerX.bord3, game->playerO.bord3);
+	if (sup == D) return subSqGameOver(game->playerX.bord4, game->playerO.bord4);
+	if (sup == E) return subSqGameOver(game->playerX.bord5, game->playerO.bord5);
+	if (sup == F) return subSqGameOver(game->playerX.bord6, game->playerO.bord6);
+	if (sup == G) return subSqGameOver(game->playerX.bord7, game->playerO.bord7);
+	if (sup == H) return subSqGameOver(game->playerX.bord8, game->playerO.bord8);
+	if (sup == I) return subSqGameOver(game->playerX.bord9, game->playerO.bord9);
+}
+
+bool gameWon(Game* game, Symbol s) {
+	if (s == X) return checkWon(game->playerX.superBord, game->playerO.superBord, X);
+	else return checkWon(game->playerX.superBord, game->playerO.superBord, O);
+}
+
 void fillSuperBoard(Player* player) {
 	player->superBord = 0b000000000;
 
@@ -363,7 +382,7 @@ void genLegalMovesSubBoard(subBoard p1, subBoard p2, Symbol s, MOVELIST* movelis
 }
 
 void genLegalMoves(Game* game, Symbol s, MOVELIST* moveList) {
-	if (game->lastSubSquare == -1) {
+	if (game->lastSubSquare == -1 || subSqWon(game,(SuperSquare)game->lastSubSquare)) {
 		genLegalMovesSubBoard(game->playerO.bord1, game->playerX.bord1, s, moveList, A);
 		genLegalMovesSubBoard(game->playerO.bord2, game->playerX.bord2, s, moveList, B);
 		genLegalMovesSubBoard(game->playerO.bord3, game->playerX.bord3, s, moveList, C);
@@ -376,16 +395,246 @@ void genLegalMoves(Game* game, Symbol s, MOVELIST* moveList) {
 		return;
 	}
 
-	if (game->lastSubSquare == 1) { genLegalMovesSubBoard(game->playerO.bord1, game->playerX.bord1, s, moveList, A); return; }
-	if (game->lastSubSquare == 2) { genLegalMovesSubBoard(game->playerO.bord2, game->playerX.bord2, s, moveList, B); return; }
-	if (game->lastSubSquare == 3) { genLegalMovesSubBoard(game->playerO.bord3, game->playerX.bord3, s, moveList, C); return; }
-	if (game->lastSubSquare == 4) { genLegalMovesSubBoard(game->playerO.bord4, game->playerX.bord4, s, moveList, D); return; }
-	if (game->lastSubSquare == 5) { genLegalMovesSubBoard(game->playerO.bord5, game->playerX.bord5, s, moveList, E); return; }
-	if (game->lastSubSquare == 6) { genLegalMovesSubBoard(game->playerO.bord6, game->playerX.bord6, s, moveList, F); return; }
-	if (game->lastSubSquare == 7) { genLegalMovesSubBoard(game->playerO.bord7, game->playerX.bord7, s, moveList, G); return; }
-	if (game->lastSubSquare == 8) { genLegalMovesSubBoard(game->playerO.bord8, game->playerX.bord8, s, moveList, H); return; }
-	if (game->lastSubSquare == 9) { genLegalMovesSubBoard(game->playerO.bord9, game->playerX.bord9, s, moveList, I); return; }
+	if (game->lastSubSquare == A) { genLegalMovesSubBoard(game->playerO.bord1, game->playerX.bord1, s, moveList, A); return; }
+	if (game->lastSubSquare == B) { genLegalMovesSubBoard(game->playerO.bord2, game->playerX.bord2, s, moveList, B); return; }
+	if (game->lastSubSquare == C) { genLegalMovesSubBoard(game->playerO.bord3, game->playerX.bord3, s, moveList, C); return; }
+	if (game->lastSubSquare == D) { genLegalMovesSubBoard(game->playerO.bord4, game->playerX.bord4, s, moveList, D); return; }
+	if (game->lastSubSquare == E) { genLegalMovesSubBoard(game->playerO.bord5, game->playerX.bord5, s, moveList, E); return; }
+	if (game->lastSubSquare == F) { genLegalMovesSubBoard(game->playerO.bord6, game->playerX.bord6, s, moveList, F); return; }
+	if (game->lastSubSquare == G) { genLegalMovesSubBoard(game->playerO.bord7, game->playerX.bord7, s, moveList, G); return; }
+	if (game->lastSubSquare == H) { genLegalMovesSubBoard(game->playerO.bord8, game->playerX.bord8, s, moveList, H); return; }
+	if (game->lastSubSquare == I) { genLegalMovesSubBoard(game->playerO.bord9, game->playerX.bord9, s, moveList, I); return; }
 
+}
+
+void genLegalMoves(Game* game, MOVELIST* moveList) {
+	if (game->playerToPlay == X) genLegalMoves(game, X, moveList);
+	else genLegalMoves(game, O, moveList);
+}
+
+void makeMove(Game* game, Move* m) {
+	short ind;
+	if (m->dst == A1 || m->dst == B1 || m->dst == C1 || m->dst == D1 || m->dst == E1 || m->dst == F1 || m->dst == G1 || m->dst == H1 || m->dst == I1) ind = 1;
+	if (m->dst == A2 || m->dst == B2 || m->dst == C2 || m->dst == D2 || m->dst == E2 || m->dst == F2 || m->dst == G2 || m->dst == H2 || m->dst == I2) ind = 2;
+	if (m->dst == A3 || m->dst == B3 || m->dst == C3 || m->dst == D3 || m->dst == E3 || m->dst == F3 || m->dst == G3 || m->dst == H3 || m->dst == I3) ind = 3;
+	if (m->dst == A4 || m->dst == B4 || m->dst == C4 || m->dst == D4 || m->dst == E4 || m->dst == F4 || m->dst == G4 || m->dst == H4 || m->dst == I4) ind = 4;
+	if (m->dst == A5 || m->dst == B5 || m->dst == C5 || m->dst == D5 || m->dst == E5 || m->dst == F5 || m->dst == G5 || m->dst == H5 || m->dst == I5) ind = 5;
+	if (m->dst == A6 || m->dst == B6 || m->dst == C6 || m->dst == D6 || m->dst == E6 || m->dst == F6 || m->dst == G6 || m->dst == H6 || m->dst == I6) ind = 6;
+	if (m->dst == A7 || m->dst == B7 || m->dst == C7 || m->dst == D7 || m->dst == E7 || m->dst == F7 || m->dst == G7 || m->dst == H7 || m->dst == I7) ind = 7;
+	if (m->dst == A8 || m->dst == B8 || m->dst == C8 || m->dst == D8 || m->dst == E8 || m->dst == F8 || m->dst == G8 || m->dst == H8 || m->dst == I8) ind = 8;
+	if (m->dst == A9 || m->dst == B9 || m->dst == C9 || m->dst == D9 || m->dst == E9 || m->dst == F9 || m->dst == G9 || m->dst == H9 || m->dst == I9) ind = 9;
+	SuperSquare supSq;
+	if (m->dst == A1 || m->dst == A2 || m->dst == A3 || m->dst == A4 || m->dst == A5 || m->dst == A6 || m->dst == A7 || m->dst == A8 || m->dst == A9) supSq = A;
+	if (m->dst == B1 || m->dst == B2 || m->dst == B3 || m->dst == B4 || m->dst == B5 || m->dst == B6 || m->dst == B7 || m->dst == B8 || m->dst == B9) supSq = B;
+	if (m->dst == C1 || m->dst == C2 || m->dst == C3 || m->dst == C4 || m->dst == C5 || m->dst == C6 || m->dst == C7 || m->dst == C8 || m->dst == C9) supSq = C;
+	if (m->dst == D1 || m->dst == D2 || m->dst == D3 || m->dst == D4 || m->dst == D5 || m->dst == D6 || m->dst == D7 || m->dst == D8 || m->dst == D9) supSq = D;
+	if (m->dst == E1 || m->dst == E2 || m->dst == E3 || m->dst == E4 || m->dst == E5 || m->dst == E6 || m->dst == E7 || m->dst == E8 || m->dst == E9) supSq = E;
+	if (m->dst == F1 || m->dst == F2 || m->dst == F3 || m->dst == F4 || m->dst == F5 || m->dst == F6 || m->dst == F7 || m->dst == F8 || m->dst == F9) supSq = F;
+	if (m->dst == G1 || m->dst == G2 || m->dst == G3 || m->dst == G4 || m->dst == G5 || m->dst == G6 || m->dst == G7 || m->dst == G8 || m->dst == G9) supSq = G;
+	if (m->dst == H1 || m->dst == H2 || m->dst == H3 || m->dst == H4 || m->dst == H5 || m->dst == H6 || m->dst == H7 || m->dst == H8 || m->dst == H9) supSq = H;
+	if (m->dst == I1 || m->dst == I2 || m->dst == I3 || m->dst == I4 || m->dst == I5 || m->dst == I6 || m->dst == I7 || m->dst == I8 || m->dst == I9) supSq = I;
+	if (m->s == X) {
+		if (supSq == A) {
+			if (ind == 1) { game->playerX.bord1 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord1 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord1 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord1 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord1 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord1 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord1 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord1 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord1 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == B) {
+			if (ind == 1) { game->playerX.bord2 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord2 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord2 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord2 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord2 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord2 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord2 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord2 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord2 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == C) {
+			if (ind == 1) { game->playerX.bord3 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord3 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord3 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord3 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord3 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord3 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord3 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord3 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord3 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == D) {
+			if (ind == 1) { game->playerX.bord4 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord4 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord4 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord4 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord4 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord4 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord4 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord4 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord4 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == E) {
+			if (ind == 1) { game->playerX.bord5 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord5 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord5 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord5 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord5 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord5 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord5 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord5 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord5 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == F) {
+			if (ind == 1) { game->playerX.bord6 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord6 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord6 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord6 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord6 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord6 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord6 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord6 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord6 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == G) {
+			if (ind == 1) { game->playerX.bord7 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord7 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord7 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord7 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord7 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord7 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord7 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord7 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord7 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == H) {
+			if (ind == 1) { game->playerX.bord8 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord8 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord8 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord8 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord8 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord8 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord8 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord8 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord8 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+		if (supSq == I) {
+			if (ind == 1) { game->playerX.bord9 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerX.bord9 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerX.bord9 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerX.bord9 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerX.bord9 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerX.bord9 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerX.bord9 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerX.bord9 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerX.bord9 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; return; }
+		}
+	}
+	if (m->s == O) {
+		if (supSq == A) {
+			if (ind == 1) { game->playerO.bord1 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord1 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord1 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord1 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord1 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord1 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord1 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord1 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord1 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == B) {
+			if (ind == 1) { game->playerO.bord2 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord2 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord2 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord2 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord2 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord2 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord2 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord2 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord2 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == C) {
+			if (ind == 1) { game->playerO.bord3 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord3 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord3 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord3 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord3 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord3 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord3 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord3 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord3 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == D) {
+			if (ind == 1) { game->playerO.bord4 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord4 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord4 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord4 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord4 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord4 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord4 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord4 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord4 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == E) {
+			if (ind == 1) { game->playerO.bord5 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord5 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord5 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord5 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord5 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord5 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord5 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord5 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord5 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == F) {
+			if (ind == 1) { game->playerO.bord6 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord6 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord6 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord6 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord6 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord6 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord6 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord6 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord6 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == G) {
+			if (ind == 1) { game->playerO.bord7 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord7 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord7 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord7 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord7 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord7 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord7 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord7 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord7 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == H) {
+			if (ind == 1) { game->playerO.bord8 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord8 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord8 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord8 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord8 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord8 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord8 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord8 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord8 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+		if (supSq == I) {
+			if (ind == 1) { game->playerO.bord9 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; return; }
+			if (ind == 2) { game->playerO.bord9 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; return; }
+			if (ind == 3) { game->playerO.bord9 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; return; }
+			if (ind == 4) { game->playerO.bord9 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; return; }
+			if (ind == 5) { game->playerO.bord9 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; return; }
+			if (ind == 6) { game->playerO.bord9 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; return; }
+			if (ind == 7) { game->playerO.bord9 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; return; }
+			if (ind == 8) { game->playerO.bord9 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; return; }
+			if (ind == 9) { game->playerO.bord9 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
+		}
+	}
 }
 
 void printSubBoard(subBoard sub, char c) {
@@ -442,6 +691,357 @@ void printOverlayedSubBoard(subBoard subP1, subBoard subP2, char p1, char p2) {
 	else cout << " ";
 	cout << "|" << endl;
 	cout << "-------" << endl;
+}
+
+void printBoard(Game* game) {
+	char p1 = 'X';
+	char p2 = 'O';
+	// first 3 blocks
+	cout << "-------------------" << endl;
+	cout << '|';
+	if ((game->playerX.bord1 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord1 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord1 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord1 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord1 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord1 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord1 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord1 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord1 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord1 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord1 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord2 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord2 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord2 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord2 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord3 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord3 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord3 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord3 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	// midle 3 blocks
+	cout << '|';
+	if ((game->playerX.bord4 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord4 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord4 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord4 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord4 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord4 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord4 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord4 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord4 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord4 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord4 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord5 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord5 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord5 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord5 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord6 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord6 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord6 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord6 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	// last 3 blocks
+	cout << '|';
+	if ((game->playerX.bord7 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord7 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord7 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 8) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 8) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 7) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 7) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 6) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 6) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord7 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord7 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord7 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 5) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 5) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 4) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 4) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 3) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 3) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
+	cout << "|";
+	if ((game->playerX.bord7 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord7 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord7 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord7 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord7 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord8 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord8 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord8 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord8 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 2) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 2) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if ((game->playerX.bord9 >> 1) & 1) cout << bitToChar(1, p1);
+	else if ((game->playerO.bord9 >> 1) & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|";
+	if (game->playerX.bord9 & 1) cout << bitToChar(1, p1);
+	else if (game->playerO.bord9 & 1) cout << bitToChar(1, p2);
+	else cout << " ";
+	cout << "|" << endl;
+	cout << "-------------------" << endl;
 }
 
 void printMoveList(MOVELIST* moveList) {
