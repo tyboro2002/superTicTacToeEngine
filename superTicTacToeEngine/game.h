@@ -63,9 +63,12 @@ struct MOVELIST {
 	Move moves[MAXMOVES];
 };
 
+void copyGame(Game* gameIn, Game* gameOut);
+
 void printSubBoard(subBoard sub, char c);
 void printOverlayedSubBoard(subBoard subP1, subBoard subP2, char p1, char p2);
 void printBoard(Game* game);
+void printMove(Move* move);
 
 void printMoveList(MOVELIST* moveList);
 void genLegalMoves(Game* game, Symbol s, MOVELIST* moveList);

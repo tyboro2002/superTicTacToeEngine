@@ -13,6 +13,31 @@ using namespace std;
 #define diagonal1 0b100010001
 #define diagonal2 0b001010100
 
+void copyGame(Game* gameIn, Game* gameOut) {
+	gameOut->lastSubSquare = gameIn->lastSubSquare;
+	gameOut->playerToPlay = gameIn->playerToPlay;
+	gameOut->playerX.bord1 = gameIn->playerX.bord1;
+	gameOut->playerX.bord2 = gameIn->playerX.bord2;
+	gameOut->playerX.bord3 = gameIn->playerX.bord3;
+	gameOut->playerX.bord4 = gameIn->playerX.bord4;
+	gameOut->playerX.bord5 = gameIn->playerX.bord5;
+	gameOut->playerX.bord6 = gameIn->playerX.bord6;
+	gameOut->playerX.bord7 = gameIn->playerX.bord7;
+	gameOut->playerX.bord8 = gameIn->playerX.bord8;
+	gameOut->playerX.bord9 = gameIn->playerX.bord9;
+	gameOut->playerX.superBord = gameIn->playerX.superBord;
+	gameOut->playerO.bord1 = gameIn->playerO.bord1;
+	gameOut->playerO.bord2 = gameIn->playerO.bord2;
+	gameOut->playerO.bord3 = gameIn->playerO.bord3;
+	gameOut->playerO.bord4 = gameIn->playerO.bord4;
+	gameOut->playerO.bord5 = gameIn->playerO.bord5;
+	gameOut->playerO.bord6 = gameIn->playerO.bord6;
+	gameOut->playerO.bord7 = gameIn->playerO.bord7;
+	gameOut->playerO.bord8 = gameIn->playerO.bord8;
+	gameOut->playerO.bord9 = gameIn->playerO.bord9;
+	gameOut->playerO.superBord = gameIn->playerO.superBord;
+}
+
 int countSetBits(subBoard sub) {
 	int count = 0;
 	while (sub) {
@@ -28,6 +53,23 @@ int countTrailingZeros(short number) {
 		return static_cast<int>(index);
 	}
 	return -1; // Return -1 if the input number is 0
+}
+
+int countLeadingZeros(short number) {
+	if (number == 0) {
+		return 9; // All zeros in the input number
+	}
+
+	// Right-shift by the count of trailing zeros in the least significant 9 bits
+	number >>= _tzcnt_u32(number & 0x1FF); // 0x1FF masks the least significant 9 bits
+
+	// Count trailing zeros in the modified number
+	unsigned long index;
+	if (_BitScanForward(&index, number)) {
+		return static_cast<int>(index);
+	}
+
+	return 9; // All bits in the least significant 9 bits are zeros
 }
 
 char bitToChar(bool b, char c) {
@@ -368,12 +410,12 @@ Square supIndToSquare(SuperSquare sup, short ind) {
 	}
 }
 
-void genLegalMovesSubBoard(subBoard p1, subBoard p2, Symbol s, MOVELIST* movelist, SuperSquare sup) {
+void genLegalMovesSubBoard(subBoard p1, subBoard p2, Symbol s, MOVELIST* movelist, SuperSquare sup) { //TODO reverse the order of the moves to be correct
 	if (checkWon(p1, p2, X) || checkWon(p1, p2, O)) return;
-	subBoard empty = (~(p1 | p2)) & 0b111111111;
+	subBoard empty = (~(p1 | p2)) &0b111111111;
 	Move* m = &movelist->moves[movelist->count];
 	while (empty) {
-		m->dst = supIndToSquare(sup, countTrailingZeros(empty)+1);
+		m->dst = supIndToSquare(sup, 9-countTrailingZeros(empty));
 		m->s = s;
 		m++;
 		movelist->count++;
@@ -1050,6 +1092,10 @@ void printMoveList(MOVELIST* moveList) {
 		return;
 	}
 	for (int i = 0; i < moveList->count; i++) {
-		cout << i << ") plays a: " << symbolToString((moveList->moves[i]).s) << " at: " << squareToString((moveList->moves[i]).dst)  /* << " with value: " << move_value(bord, &moveList->moves[i], false)*/ << endl; //TODO for testing 
+		cout << i << ") plays a: " << symbolToString((moveList->moves[i]).s) << " at: " << squareToString((moveList->moves[i]).dst) << endl;
 	}
+}
+
+void printMove(Move* move) {
+	cout << "a: " << symbolToString(move->s) << " at : " << squareToString(move->dst) << endl;;
 }

@@ -3,6 +3,7 @@
 
 #include "superTicTacToeEngine.h"
 #include "game.h"
+#include "engine.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ int main(){
 	while (!(gameWon(&game, X) || gameWon(&game, O))) {
 		moveList.count = 0;
 		printBoard(&game);
+		//Move result = minimaxRoot(&game, 1, true);
+		//printMove(&result);
 		genLegalMoves(&game, &moveList);
 		printMoveList(&moveList);
 		cout << "what move do you want to play" << endl;
