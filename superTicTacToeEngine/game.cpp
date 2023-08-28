@@ -72,10 +72,7 @@ int countLeadingZeros(short number) {
 	return 9; // All bits in the least significant 9 bits are zeros
 }
 
-char bitToChar(bool b, char c) {
-	if (b) return c;
-	else return ' ';
-}
+char bitToChar(bool b, char c) { return b ? c : ' ';}
 
 std::string symbolToString(Symbol s) {
 	if (s == X) return "X";
