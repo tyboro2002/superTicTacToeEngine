@@ -1,6 +1,8 @@
 #include "engine.h"
 #define endScore 100
 
+//#define INFINITY ((float)(1e300 * 1e300))
+
 Move minimaxRoot(Game* game, int depth, bool isMaximizer) {
 	MOVELIST moveList;
 	Move bestMove;
