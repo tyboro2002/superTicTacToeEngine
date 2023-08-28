@@ -174,6 +174,41 @@ std::string squareToString(Square s) {
 	else if (s == I9) return "I9";
 }
 
+bool checkPlayerEmpty(Player* player) {
+	if (player->bord1 != 0) return false;
+	if (player->bord2 != 0) return false;
+	if (player->bord3 != 0) return false;
+	if (player->bord4 != 0) return false;
+	if (player->bord5 != 0) return false;
+	if (player->bord6 != 0) return false;
+	if (player->bord7 != 0) return false;
+	if (player->bord8 != 0) return false;
+	if (player->bord9 != 0) return false;
+}
+
+bool checkSquaresOver(Game* game) {
+	Player empty;
+	empty.bord1 = (~(game->playerX.bord1 | game->playerO.bord1)) & 0b111111111;
+	empty.bord2 = (~(game->playerX.bord2 | game->playerO.bord2)) & 0b111111111;
+	empty.bord3 = (~(game->playerX.bord3 | game->playerO.bord3)) & 0b111111111;
+	empty.bord4 = (~(game->playerX.bord4 | game->playerO.bord4)) & 0b111111111;
+	empty.bord5 = (~(game->playerX.bord5 | game->playerO.bord5)) & 0b111111111;
+	empty.bord6 = (~(game->playerX.bord6 | game->playerO.bord6)) & 0b111111111;
+	empty.bord7 = (~(game->playerX.bord7 | game->playerO.bord7)) & 0b111111111;
+	empty.bord8 = (~(game->playerX.bord8 | game->playerO.bord8)) & 0b111111111;
+	empty.bord9 = (~(game->playerX.bord9 | game->playerO.bord9)) & 0b111111111;
+	return !checkPlayerEmpty(&empty);
+}
+
+void genLegalMoves(Game* game, MOVELIST* moveList); // abstract to use it in the next function defined later in this file
+
+bool checkMovesOver(Game* game) {
+	MOVELIST moveList;
+	moveList.count = 0;
+	genLegalMoves(game, &moveList);
+	return !(moveList.count == 0);
+}
+
 bool checkWon(subBoard subp1, subBoard subp2, Symbol s) {
 	if (s == X) {
 		if (countSetBits(subp1 & row1) == 3) return true;
@@ -735,7 +770,7 @@ void printOverlayedSubBoard(subBoard subP1, subBoard subP2, char p1, char p2) {
 	cout << "-------" << endl;
 }
 
-void printBoard(Game* game) {
+void printBoard(Game* game, bool drawSuperGame) {
 	char p1 = 'X';
 	char p2 = 'O';
 	// first 3 blocks
@@ -1084,6 +1119,10 @@ void printBoard(Game* game) {
 	else cout << " ";
 	cout << "|" << endl;
 	cout << "-------------------" << endl;
+	if (drawSuperGame) {
+		cout << endl;
+		printOverlayedSubBoard(game->playerX.superBord, game->playerO.superBord, 'X', 'O');
+	}
 }
 
 void printMoveList(MOVELIST* moveList) {

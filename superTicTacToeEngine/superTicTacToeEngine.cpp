@@ -14,9 +14,9 @@ int main(){
 	MOVELIST moveList;
 	Move move;
 	int moveIndex;
-	while (!(gameWon(&game, X) || gameWon(&game, O))) {
+	while (!(gameWon(&game, X) || gameWon(&game, O)) && checkSquaresOver(&game) && checkMovesOver(&game)) {
 		moveList.count = 0;
-		printBoard(&game);
+		printBoard(&game, true);
 		//Move result = minimaxRoot(&game, 1, true);
 		//printMove(&result);
 		genLegalMoves(&game, &moveList);
@@ -25,8 +25,10 @@ int main(){
 		cin >> moveIndex;
 		makeMove(&game, &moveList.moves[moveIndex]);
 	}
-
-	printBoard(&game);
+	if (gameWon(&game, X)) cout << "X won the game" << endl;
+	else if (gameWon(&game, O)) cout << "O won the game" << endl;
+	else cout << "game drawn" << endl;
+	printBoard(&game, true);
 	//cout << "Size of a player: " << sizeof(Player) << endl;
 	//cout << "size of a game: " << sizeof(Game) << endl;
 	return 0;

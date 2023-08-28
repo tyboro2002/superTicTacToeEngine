@@ -67,7 +67,7 @@ void copyGame(Game* gameIn, Game* gameOut);
 
 void printSubBoard(subBoard sub, char c);
 void printOverlayedSubBoard(subBoard subP1, subBoard subP2, char p1, char p2);
-void printBoard(Game* game);
+void printBoard(Game* game, bool drawSuperGame);
 void printMove(Move* move);
 
 void printMoveList(MOVELIST* moveList);
@@ -76,3 +76,5 @@ void genLegalMoves(Game* game, MOVELIST* moveList);
 void makeMove(Game* game,Move* m);
 
 bool gameWon(Game* game, Symbol s);
+bool checkSquaresOver(Game* game);
+bool checkMovesOver(Game* game);
