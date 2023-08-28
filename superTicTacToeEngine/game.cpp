@@ -712,6 +712,7 @@ void makeMove(Game* game, Move* m) {
 			if (ind == 9) { game->playerO.bord9 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; return; }
 		}
 	}
+	fillSuperBoardGame(game);
 }
 
 void printSubBoard(subBoard sub, char c) {
