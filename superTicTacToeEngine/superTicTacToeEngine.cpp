@@ -20,19 +20,45 @@ int main(){
 	*/
 	
 	Game game;
+	//std::string SPTTT = "----O--O-----X--------X--------------O--O--O-----------------------------O--O--OX O -";
+	//readInSPTTTString(&game, &SPTTT, false);
 	MOVELIST moveList;
 	Move move;
+	int numberOfMove = 0;
+	if (game.playerToPlay != X) numberOfMove++;
 	int moveIndex;
+	int inputMethod;
+	std::string moveString;
+	cout << "how do you want moves to be inputed?" << endl;
+	cout << "0) output move list and input number of move" << endl;
+	cout << "1) output move list and input move as (ex. A5)" << endl;
+	cout << "2) only input move as (ex. A5)" << endl;
+	cin >> inputMethod;
 	while (!(gameWon(&game, X) || gameWon(&game, O)) && checkSquaresOver(&game) && checkMovesOver(&game)) {
 		moveList.count = 0;
 		printBoard(&game, true);
 		//Move result = minimaxRoot(&game, 1, true);
 		//printMove(&result);
 		genLegalMoves(&game, &moveList);
-		printMoveList(&moveList);
+		if(inputMethod == 0 ||inputMethod == 1) printMoveList(&moveList);
 		cout << "what move do you want to play" << endl;
-		cin >> moveIndex;
-		makeMove(&game, &moveList.moves[moveIndex]);
+		if (inputMethod == 0) {
+			cin >> moveIndex;
+			makeMove(&game, &moveList.moves[moveIndex]);
+		}
+		else if (inputMethod == 1 || inputMethod == 2) {
+			cin >> moveString;
+			move.dst = stringToSquare(moveString);
+			move.s = (Symbol)(numberOfMove%2);
+			printMove(&move);
+			bool moveInList = false;
+			for (int i = 0; i < moveList.count; i++) {
+				if (moveList.moves[i] == move) moveInList = true;
+			}
+			if (!moveInList) numberOfMove--;
+			if (moveInList) makeMove(&game, &move);
+		}
+		numberOfMove++; //swap player (only for the input nothing changes at the game object)
 	}
 	if (gameWon(&game, X)) cout << "X won the game" << endl;
 	else if (gameWon(&game, O)) cout << "O won the game" << endl;

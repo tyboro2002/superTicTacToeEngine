@@ -185,6 +185,100 @@ std::string squareToString(Square s) {
 	else if (s == I7) return "I7";
 	else if (s == I8) return "I8";
 	else if (s == I9) return "I9";
+	else return "INVALID";
+}
+
+Square stringToSquare(std::string s) {
+	if (s == "A1") return A1;
+	else if (s == "A2") return A2;
+	else if (s == "A3") return A3;
+	else if (s == "A4") return A4;
+	else if (s == "A5") return A5;
+	else if (s == "A6") return A6;
+	else if (s == "A7") return A7;
+	else if (s == "A8") return A8;
+	else if (s == "A9") return A9;
+
+	else if (s == "B1") return B1;
+	else if (s == "B2") return B2;
+	else if (s == "B3") return B3;
+	else if (s == "B4") return B4;
+	else if (s == "B5") return B5;
+	else if (s == "B6") return B6;
+	else if (s == "B7") return B7;
+	else if (s == "B8") return B8;
+	else if (s == "B9") return B9;
+
+	else if (s == "C1") return C1;
+	else if (s == "C2") return C2;
+	else if (s == "C3") return C3;
+	else if (s == "C4") return C4;
+	else if (s == "C5") return C5;
+	else if (s == "C6") return C6;
+	else if (s == "C7") return C7;
+	else if (s == "C8") return C8;
+	else if (s == "C9") return C9;
+
+	else if (s == "D1") return D1;
+	else if (s == "D2") return D2;
+	else if (s == "D3") return D3;
+	else if (s == "D4") return D4;
+	else if (s == "D5") return D5;
+	else if (s == "D6") return D6;
+	else if (s == "D7") return D7;
+	else if (s == "D8") return D8;
+	else if (s == "D9") return D9;
+
+	else if (s == "E1") return E1;
+	else if (s == "E2") return E2;
+	else if (s == "E3") return E3;
+	else if (s == "E4") return E4;
+	else if (s == "E5") return E5;
+	else if (s == "E6") return E6;
+	else if (s == "E7") return E7;
+	else if (s == "E8") return E8;
+	else if (s == "E9") return E9;
+
+	else if (s == "F1") return F1;
+	else if (s == "F2") return F2;
+	else if (s == "F3") return F3;
+	else if (s == "F4") return F4;
+	else if (s == "F5") return F5;
+	else if (s == "F6") return F6;
+	else if (s == "F7") return F7;
+	else if (s == "F8") return F8;
+	else if (s == "F9") return F9;
+
+	else if (s == "G1") return G1;
+	else if (s == "G2") return G2;
+	else if (s == "G3") return G3;
+	else if (s == "G4") return G4;
+	else if (s == "G5") return G5;
+	else if (s == "G6") return G6;
+	else if (s == "G7") return G7;
+	else if (s == "G8") return G8;
+	else if (s == "G9") return G9;
+
+	else if (s == "H1") return H1;
+	else if (s == "H2") return H2;
+	else if (s == "H3") return H3;
+	else if (s == "H4") return H4;
+	else if (s == "H5") return H5;
+	else if (s == "H6") return H6;
+	else if (s == "H7") return H7;
+	else if (s == "H8") return H8;
+	else if (s == "H9") return H9;
+
+	else if (s == "I1") return I1;
+	else if (s == "I2") return I2;
+	else if (s == "I3") return I3;
+	else if (s == "I4") return I4;
+	else if (s == "I5") return I5;
+	else if (s == "I6") return I6;
+	else if (s == "I7") return I7;
+	else if (s == "I8") return I8;
+	else if (s == "I9") return I9;
+	return INVALID;
 }
 
 /*
@@ -885,6 +979,51 @@ void makeMove(Game* game, Move* m) {
 		}
 	}
 }
+
+void undoMove(Game* game, Move* m, int oldSquare) {
+	short ind;
+	if (m->dst == A1 || m->dst == B1 || m->dst == C1 || m->dst == D1 || m->dst == E1 || m->dst == F1 || m->dst == G1 || m->dst == H1 || m->dst == I1) ind = 1;
+	if (m->dst == A2 || m->dst == B2 || m->dst == C2 || m->dst == D2 || m->dst == E2 || m->dst == F2 || m->dst == G2 || m->dst == H2 || m->dst == I2) ind = 2;
+	if (m->dst == A3 || m->dst == B3 || m->dst == C3 || m->dst == D3 || m->dst == E3 || m->dst == F3 || m->dst == G3 || m->dst == H3 || m->dst == I3) ind = 3;
+	if (m->dst == A4 || m->dst == B4 || m->dst == C4 || m->dst == D4 || m->dst == E4 || m->dst == F4 || m->dst == G4 || m->dst == H4 || m->dst == I4) ind = 4;
+	if (m->dst == A5 || m->dst == B5 || m->dst == C5 || m->dst == D5 || m->dst == E5 || m->dst == F5 || m->dst == G5 || m->dst == H5 || m->dst == I5) ind = 5;
+	if (m->dst == A6 || m->dst == B6 || m->dst == C6 || m->dst == D6 || m->dst == E6 || m->dst == F6 || m->dst == G6 || m->dst == H6 || m->dst == I6) ind = 6;
+	if (m->dst == A7 || m->dst == B7 || m->dst == C7 || m->dst == D7 || m->dst == E7 || m->dst == F7 || m->dst == G7 || m->dst == H7 || m->dst == I7) ind = 7;
+	if (m->dst == A8 || m->dst == B8 || m->dst == C8 || m->dst == D8 || m->dst == E8 || m->dst == F8 || m->dst == G8 || m->dst == H8 || m->dst == I8) ind = 8;
+	if (m->dst == A9 || m->dst == B9 || m->dst == C9 || m->dst == D9 || m->dst == E9 || m->dst == F9 || m->dst == G9 || m->dst == H9 || m->dst == I9) ind = 9;
+	SuperSquare supSq;
+	if (m->dst == A1 || m->dst == A2 || m->dst == A3 || m->dst == A4 || m->dst == A5 || m->dst == A6 || m->dst == A7 || m->dst == A8 || m->dst == A9) supSq = A;
+	if (m->dst == B1 || m->dst == B2 || m->dst == B3 || m->dst == B4 || m->dst == B5 || m->dst == B6 || m->dst == B7 || m->dst == B8 || m->dst == B9) supSq = B;
+	if (m->dst == C1 || m->dst == C2 || m->dst == C3 || m->dst == C4 || m->dst == C5 || m->dst == C6 || m->dst == C7 || m->dst == C8 || m->dst == C9) supSq = C;
+	if (m->dst == D1 || m->dst == D2 || m->dst == D3 || m->dst == D4 || m->dst == D5 || m->dst == D6 || m->dst == D7 || m->dst == D8 || m->dst == D9) supSq = D;
+	if (m->dst == E1 || m->dst == E2 || m->dst == E3 || m->dst == E4 || m->dst == E5 || m->dst == E6 || m->dst == E7 || m->dst == E8 || m->dst == E9) supSq = E;
+	if (m->dst == F1 || m->dst == F2 || m->dst == F3 || m->dst == F4 || m->dst == F5 || m->dst == F6 || m->dst == F7 || m->dst == F8 || m->dst == F9) supSq = F;
+	if (m->dst == G1 || m->dst == G2 || m->dst == G3 || m->dst == G4 || m->dst == G5 || m->dst == G6 || m->dst == G7 || m->dst == G8 || m->dst == G9) supSq = G;
+	if (m->dst == H1 || m->dst == H2 || m->dst == H3 || m->dst == H4 || m->dst == H5 || m->dst == H6 || m->dst == H7 || m->dst == H8 || m->dst == H9) supSq = H;
+	if (m->dst == I1 || m->dst == I2 || m->dst == I3 || m->dst == I4 || m->dst == I5 || m->dst == I6 || m->dst == I7 || m->dst == I8 || m->dst == I9) supSq = I;
+	if (m->s == X) {
+		if (supSq == A) { game->playerX.bord1 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return;}
+		if (supSq == B) { game->playerX.bord2 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return;}
+		if (supSq == C) { game->playerX.bord3 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == D) { game->playerX.bord4 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == E) { game->playerX.bord5 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == F) { game->playerX.bord6 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == G) { game->playerX.bord7 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == H) { game->playerX.bord8 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == I) { game->playerX.bord9 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+	}
+	if (m->s == O) {
+		if (supSq == A) { game->playerO.bord1 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == B) { game->playerO.bord2 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == C) { game->playerO.bord3 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == D) { game->playerO.bord4 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == E) { game->playerO.bord5 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == F) { game->playerO.bord6 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == G) { game->playerO.bord7 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == H) { game->playerO.bord8 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+		if (supSq == I) { game->playerO.bord9 &= ~intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = oldSquare; fillSuperBoardGame(game); return; }
+	}
+} //TODO a lot of testing
 
 void printSubBoard(subBoard sub, char c) {
 	cout << "-------" << endl;

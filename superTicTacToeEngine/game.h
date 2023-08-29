@@ -43,7 +43,7 @@ enum Square {
 	D7, D8, D9, E7, E8, E9, F7, F8, F9,
 	G1, G2, G3, H1, H2, H3, I1, I2, I3,
 	G4, G5, G6, H4, H5, H6, I4, I5, I6,
-	G7, G8, G9, H7, H8, H9, I7, I8, I9
+	G7, G8, G9, H7, H8, H9, I7, I8, I9, INVALID
 };
 
 enum SuperSquare {
@@ -55,6 +55,11 @@ enum SuperSquare {
 struct Move {
 	Square dst;
 	Symbol s;
+	bool operator ==(const Move& other) const {
+		if (dst != other.dst) return false;
+		if (s != other.s) return false;
+		return true;
+	}
 };
 
 // List of moves
@@ -62,6 +67,8 @@ struct MOVELIST {
 	int count;  // number of moves
 	Move moves[MAXMOVES];
 };
+
+Square stringToSquare(std::string s);
 
 std::string writeOutSPTTTstring(Game* game);
 void readInSPTTTString(Game* game, std::string* SPTTT, bool extraInfo);
@@ -76,6 +83,7 @@ void printMoveList(MOVELIST* moveList);
 void genLegalMoves(Game* game, Symbol s, MOVELIST* moveList);
 void genLegalMoves(Game* game, MOVELIST* moveList);
 void makeMove(Game* game,Move* m);
+void undoMove(Game* game, Move* m, int oldSquare);
 
 bool gameWon(Game* game, Symbol s);
 bool checkSquaresOver(Game* game);
