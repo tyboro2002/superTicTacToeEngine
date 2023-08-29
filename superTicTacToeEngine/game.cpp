@@ -777,206 +777,26 @@ void makeMove(Game* game, Move* m) {
 	if (m->dst == H1 || m->dst == H2 || m->dst == H3 || m->dst == H4 || m->dst == H5 || m->dst == H6 || m->dst == H7 || m->dst == H8 || m->dst == H9) supSq = H;
 	if (m->dst == I1 || m->dst == I2 || m->dst == I3 || m->dst == I4 || m->dst == I5 || m->dst == I6 || m->dst == I7 || m->dst == I8 || m->dst == I9) supSq = I;
 	if (m->s == X) {
-		if (supSq == A) {
-			if (ind == 1) { game->playerX.bord1 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord1 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord1 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord1 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord1 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord1 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord1 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord1 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord1 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == B) {
-			if (ind == 1) { game->playerX.bord2 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord2 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord2 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord2 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord2 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord2 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord2 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord2 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord2 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == C) {
-			if (ind == 1) { game->playerX.bord3 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord3 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord3 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord3 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord3 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord3 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord3 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord3 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord3 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == D) {
-			if (ind == 1) { game->playerX.bord4 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord4 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord4 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord4 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord4 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord4 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord4 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord4 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord4 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == E) {
-			if (ind == 1) { game->playerX.bord5 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord5 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord5 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord5 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord5 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord5 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord5 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord5 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord5 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == F) {
-			if (ind == 1) { game->playerX.bord6 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord6 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord6 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord6 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord6 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord6 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord6 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord6 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord6 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == G) {
-			if (ind == 1) { game->playerX.bord7 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord7 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord7 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord7 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord7 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord7 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord7 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord7 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord7 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == H) {
-			if (ind == 1) { game->playerX.bord8 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord8 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord8 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord8 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord8 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord8 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord8 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord8 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord8 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == I) {
-			if (ind == 1) { game->playerX.bord9 |= 0b100000000; game->playerToPlay = O; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerX.bord9 |= 0b010000000; game->playerToPlay = O; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerX.bord9 |= 0b001000000; game->playerToPlay = O; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerX.bord9 |= 0b000100000; game->playerToPlay = O; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerX.bord9 |= 0b000010000; game->playerToPlay = O; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerX.bord9 |= 0b000001000; game->playerToPlay = O; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerX.bord9 |= 0b000000100; game->playerToPlay = O; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerX.bord9 |= 0b000000010; game->playerToPlay = O; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerX.bord9 |= 0b000000001; game->playerToPlay = O; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
+		if (supSq == A) { game->playerX.bord1 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == B) { game->playerX.bord2 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == C) { game->playerX.bord3 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == D) { game->playerX.bord4 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == E) { game->playerX.bord5 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == F) { game->playerX.bord6 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == G) { game->playerX.bord7 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == H) { game->playerX.bord8 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == I) { game->playerX.bord9 |= intToSubBoard(ind); game->playerToPlay = O; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
 	}
 	if (m->s == O) {
-		if (supSq == A) {
-			if (ind == 1) { game->playerO.bord1 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord1 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord1 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord1 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord1 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord1 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord1 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord1 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord1 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == B) {
-			if (ind == 1) { game->playerO.bord2 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord2 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord2 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord2 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord2 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord2 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord2 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord2 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord2 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == C) {
-			if (ind == 1) { game->playerO.bord3 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord3 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord3 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord3 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord3 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord3 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord3 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord3 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord3 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == D) {
-			if (ind == 1) { game->playerO.bord4 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord4 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord4 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord4 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord4 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord4 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord4 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord4 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord4 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == E) {
-			if (ind == 1) { game->playerO.bord5 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord5 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord5 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord5 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord5 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord5 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord5 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord5 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord5 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == F) {
-			if (ind == 1) { game->playerO.bord6 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord6 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord6 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord6 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord6 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord6 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord6 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord6 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord6 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == G) {
-			if (ind == 1) { game->playerO.bord7 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord7 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord7 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord7 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord7 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord7 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord7 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord7 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord7 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == H) {
-			if (ind == 1) { game->playerO.bord8 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord8 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord8 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord8 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord8 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord8 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord8 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord8 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord8 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
-		if (supSq == I) {
-			if (ind == 1) { game->playerO.bord9 |= 0b100000000; game->playerToPlay = X; game->lastSubSquare = A; fillSuperBoardGame(game); return; }
-			if (ind == 2) { game->playerO.bord9 |= 0b010000000; game->playerToPlay = X; game->lastSubSquare = B; fillSuperBoardGame(game); return; }
-			if (ind == 3) { game->playerO.bord9 |= 0b001000000; game->playerToPlay = X; game->lastSubSquare = C; fillSuperBoardGame(game); return; }
-			if (ind == 4) { game->playerO.bord9 |= 0b000100000; game->playerToPlay = X; game->lastSubSquare = D; fillSuperBoardGame(game); return; }
-			if (ind == 5) { game->playerO.bord9 |= 0b000010000; game->playerToPlay = X; game->lastSubSquare = E; fillSuperBoardGame(game); return; }
-			if (ind == 6) { game->playerO.bord9 |= 0b000001000; game->playerToPlay = X; game->lastSubSquare = F; fillSuperBoardGame(game); return; }
-			if (ind == 7) { game->playerO.bord9 |= 0b000000100; game->playerToPlay = X; game->lastSubSquare = G; fillSuperBoardGame(game); return; }
-			if (ind == 8) { game->playerO.bord9 |= 0b000000010; game->playerToPlay = X; game->lastSubSquare = H; fillSuperBoardGame(game); return; }
-			if (ind == 9) { game->playerO.bord9 |= 0b000000001; game->playerToPlay = X; game->lastSubSquare = I; fillSuperBoardGame(game); return; }
-		}
+		if (supSq == A) { game->playerO.bord1 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == B) { game->playerO.bord2 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == C) { game->playerO.bord3 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == D) { game->playerO.bord4 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == E) { game->playerO.bord5 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == F) { game->playerO.bord6 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == G) { game->playerO.bord7 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == H) { game->playerO.bord8 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
+		if (supSq == I) { game->playerO.bord9 |= intToSubBoard(ind); game->playerToPlay = X; game->lastSubSquare = ind - 1; fillSuperBoardGame(game); return; }
 	}
 }
 
