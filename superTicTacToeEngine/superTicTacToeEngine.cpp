@@ -18,6 +18,14 @@ int main(){
 	cout << SPTTT << endl;
 	cout << writeOutSPTTTstring(&game) << endl;
 	*/
+	/*
+	cout << "Size of a player: " << sizeof(Player) << endl;
+	cout << "size of a game: " << sizeof(Game) << endl;
+	cout << "size of a move: " << sizeof(Move) << endl;
+	cout << "size of a square: " << sizeof(Square) << endl;
+	cout << "size of a superSquare: " << sizeof(SuperSquare) << endl;
+	cout << "size of a symbol: " << sizeof(Symbol) << endl;
+	*/
 	
 	Game game;
 	//std::string SPTTT = "----O--O-----X--------X--------------O--O--O-----------------------------O--O--OX O -";
@@ -64,7 +72,5 @@ int main(){
 	else if (gameWon(&game, O)) cout << "O won the game" << endl;
 	else cout << "game drawn" << endl;
 	printBoard(&game, true);
-	//cout << "Size of a player: " << sizeof(Player) << endl;
-	//cout << "size of a game: " << sizeof(Game) << endl;
 	return 0;
 }
