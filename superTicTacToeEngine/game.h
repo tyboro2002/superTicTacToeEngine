@@ -63,6 +63,8 @@ struct MOVELIST {
 	Move moves[MAXMOVES];
 };
 
+std::string writeOutSPTTTstring(Game* game);
+void readInSPTTTString(Game* game, std::string* SPTTT, bool extraInfo);
 void copyGame(Game* gameIn, Game* gameOut);
 
 void printSubBoard(subBoard sub, char c);

@@ -3,6 +3,7 @@
 #include <locale>
 #include <Windows.h>
 #include <stdio.h>
+#include <sstream>
 
 using namespace std;
 
@@ -186,6 +187,161 @@ std::string squareToString(Square s) {
 	else if (s == I9) return "I9";
 }
 
+/*
+* convert a int to the subboard with the coresponding bit to 1
+*/
+subBoard intToSubBoard(int ind) {
+	if (ind == 0) return 0b000000000;
+	if (ind == 1) return 0b100000000;
+	if (ind == 2) return 0b010000000;
+	if (ind == 3) return 0b001000000;
+	if (ind == 4) return 0b000100000;
+	if (ind == 5) return 0b000010000;
+	if (ind == 6) return 0b000001000;
+	if (ind == 7) return 0b000000100;
+	if (ind == 8) return 0b000000010;
+	if (ind == 9) return 0b000000001;
+}
+
+std::string writeOutSPTTTstring(Game* game) {
+	std::stringstream ss;
+	subBoard pX[9] = {game->playerX.bord1,game->playerX.bord2, game->playerX.bord3 , game->playerX.bord4 ,game->playerX.bord5 ,game->playerX.bord6 ,game->playerX.bord7 ,game->playerX.bord8 ,game->playerX.bord9 };
+	subBoard pO[9] = { game->playerO.bord1,game->playerO.bord2, game->playerO.bord3 , game->playerO.bord4 ,game->playerO.bord5 ,game->playerO.bord6 ,game->playerO.bord7 ,game->playerO.bord8 ,game->playerO.bord9 };
+
+	for (int p = 0; p < 9; p++) {
+		//put arbitrary formatted data into the stream
+		for (int i = 8; i >= 0; --i) {
+			bool bitNumber1 = (pX[p] >> i) & 1;
+			bool bitNumber2 = (pO[p] >> i) & 1;
+
+			if (bitNumber1) {
+				// Action when the i-th bit in number1 is set
+				ss << "X";
+			}
+			else if (bitNumber2) {
+				// Action when the i-th bit in number2 is set 
+				ss << "O";
+			}
+			else {
+				// Action when both bits are either both set or both not set
+				ss << "-";
+			}
+		}
+	}
+	ss << " ";
+	if (game->playerToPlay == X) ss << "X";
+	else ss << "O";
+	ss << " ";
+	if (game->lastSubSquare == -1) ss << "-";
+	else if (game->lastSubSquare == A) ss << "A";
+	else if (game->lastSubSquare == B) ss << "B";
+	else if (game->lastSubSquare == C) ss << "C";
+	else if (game->lastSubSquare == D) ss << "D";
+	else if (game->lastSubSquare == E) ss << "E";
+	else if (game->lastSubSquare == F) ss << "F";
+	else if (game->lastSubSquare == G) ss << "G";
+	else if (game->lastSubSquare == H) ss << "H";
+	else if (game->lastSubSquare == I) ss << "I";
+	//convert the stream buffer into a string
+	std::string str = ss.str();
+	return str;
+}
+
+bool subSqWon(Game* game, SuperSquare sup); //abstract to use in following function declared later
+void fillSuperBoardGame(Game* game); //abstract to use in following function declared later
+bool gameWon(Game* game); //abstract to use in following function declared later
+
+/*
+* A SPTTT string is short for SuPerTicTacToe string
+* it concists of 3 parts divided by " "
+* the first part is 81 times a X or O or - this symbols represent the filling of the squares (left to right top to bottom per square and squares in the same order)
+* the second part is a O or a X indicating wich player to play
+* the third part is a -, A, B, C, D, E, F, G, H or I indicating wich subsquare was last played (- indicates no square or last square blocked (the code will check for this to))
+*/
+void readInSPTTTString(Game* game, std::string* SPTTT, bool extraInfo) {
+	std::string squares = SPTTT->substr(0, SPTTT->find(" "));
+	std::string rest = SPTTT->substr(SPTTT->find(" ")+1); // take of the squares part
+	std::string playerToPlay = rest.substr(0, rest.find(" "));
+	std::string lastPlayedSquare = rest.substr(rest.find(" ") + 1);
+	if (playerToPlay == "O") game->playerToPlay = O;
+	else game->playerToPlay = X;
+	if (lastPlayedSquare == "-") game->lastSubSquare = -1;
+	else if (lastPlayedSquare == "A") game->lastSubSquare = A;
+	else if (lastPlayedSquare == "B") game->lastSubSquare = B;
+	else if (lastPlayedSquare == "C") game->lastSubSquare = C;
+	else if (lastPlayedSquare == "D") game->lastSubSquare = D;
+	else if (lastPlayedSquare == "E") game->lastSubSquare = E;
+	else if (lastPlayedSquare == "F") game->lastSubSquare = F;
+	else if (lastPlayedSquare == "G") game->lastSubSquare = G;
+	else if (lastPlayedSquare == "H") game->lastSubSquare = H;
+	else if (lastPlayedSquare == "I") game->lastSubSquare = I;
+	else game->lastSubSquare = -1;
+	int ind = 0;
+	for (char c : SPTTT->substr(0, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord1 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord1 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(9, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord2 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord2 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(18, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord3 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord3 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(27, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord4 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord4 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(36, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord5 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord5 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(45, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord6 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord6 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(54, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord7 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord7 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(63, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord8 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord8 |= intToSubBoard(ind);
+	}
+	ind = 0;
+	for (char c : SPTTT->substr(72, 9)) {
+		ind++;
+		if (c == 'X') game->playerX.bord9 |= intToSubBoard(ind);
+		else if (c == 'O') game->playerO.bord9 |= intToSubBoard(ind);
+	}
+	if (!(game->lastSubSquare == -1)) {
+		if (extraInfo) cout << "check happening" << endl;
+		if (subSqWon(game, (SuperSquare)game->lastSubSquare)) {
+			if (extraInfo) cout << "subsquare fixed" << endl;
+			game->lastSubSquare = -1;
+		}
+	}
+	fillSuperBoardGame(game);
+	if (extraInfo) { if (gameWon(game)) cout << "game already won" << endl; }
+	if (extraInfo) printBoard(game, true);
+}
+
 bool checkPlayerEmpty(Player* player) {
 	if (player->bord1 != 0) return false;
 	if (player->bord2 != 0) return false;
@@ -263,6 +419,10 @@ bool subSqWon(Game* game, SuperSquare sup) {
 bool gameWon(Game* game, Symbol s) {
 	if (s == X) return checkWon(game->playerX.superBord, game->playerO.superBord, X);
 	else return checkWon(game->playerX.superBord, game->playerO.superBord, O);
+}
+
+bool gameWon(Game* game) {
+	return checkWon(game->playerX.superBord, game->playerO.superBord, X) || checkWon(game->playerX.superBord, game->playerO.superBord, O);
 }
 
 void fillSuperBoard(Player* player) {

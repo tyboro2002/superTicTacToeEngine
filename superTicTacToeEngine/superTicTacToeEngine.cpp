@@ -10,6 +10,15 @@ using namespace std;
 int main(){
 	//printSubBoard(0b001010100, 'X');
 	//printOverlayedSubBoard(0b111000000, 0b000000111, 'X', 'O');
+	/*
+	Game game;
+	//std::string SPTTT = "-O--O--O-----X--------X--------------O--O--O-----------------------------O--O--OX X A"; // game already won
+	std::string SPTTT = "----O--O-----X--------X--------------O--O--O-----------------------------O--O--OX X A";
+	readInSPTTTString(&game, &SPTTT, false);
+	cout << SPTTT << endl;
+	cout << writeOutSPTTTstring(&game) << endl;
+	*/
+	
 	Game game;
 	MOVELIST moveList;
 	Move move;
