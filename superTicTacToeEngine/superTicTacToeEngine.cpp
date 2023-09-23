@@ -4,10 +4,20 @@
 #include "superTicTacToeEngine.h"
 #include "game.h"
 #include "engine.h"
+#include "OLCPixelGameEngineGame.h"
+
+#define UI 1 // define if the nice UI is used 1 uses it 0 doesnt
 
 using namespace std;
 
 int main(){
+#if UI
+	SuperTicTacToeGame demo;
+	if (demo.Construct(80, 75, 10, 10, true))
+		demo.Start();
+
+	return 0;
+#else
 	//printSubBoard(0b001010100, 'X');
 	//printOverlayedSubBoard(0b111000000, 0b000000111, 'X', 'O');
 	/*
@@ -73,4 +83,5 @@ int main(){
 	else cout << "game drawn" << endl;
 	printBoard(&game, true);
 	return 0;
+#endif
 }
