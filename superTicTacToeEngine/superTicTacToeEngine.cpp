@@ -13,7 +13,7 @@ using namespace std;
 int main(){
 #if UI
 	SuperTicTacToeGame demo;
-	if (demo.Construct(80, 75, 10, 10, true))
+	if (demo.Construct(100, 75, 1, 1, true))
 		demo.Start();
 
 	return 0;
