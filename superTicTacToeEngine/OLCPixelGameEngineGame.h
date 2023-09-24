@@ -232,6 +232,7 @@ private:
 	void swapPlayingPlayer() {
 		if (PlayingPlayer == XOpt) PlayingPlayer = OOpt;
 		else PlayingPlayer = XOpt;
+		drawPlayingPlayer(gridPointsSuper.at(7).x + 18 / 3, gridPointsSuper.at(7).y + (18 / 3)*2);
 	}
 
 	SymbolOpt checkWonSquare(SymbolOpt gameState[9]) {
@@ -333,5 +334,20 @@ private:
 		for (olc::vi2d& point : moves) {
 			drawGridPoint(point.x, point.y, olc::RED);
 		}
+	}
+
+	void drawPlayingPlayer(int x, int y) {
+		drawFilledSquareCenterd(x, y, SYMBOL_SIZE*2+1, olc::BLACK);
+		if (PlayingPlayer == OOpt) {
+			DrawCircleCenterd(x, y, SYMBOL_SIZE, olc::GREEN);
+		}else if (PlayingPlayer == XOpt) {
+			DrawCrossCenterd(x, y, SYMBOL_SIZE, olc::BLUE);
+		}
+	}
+
+	void drawFilledSquareCenterd(int x, int y, int size, olc::Pixel color) {
+
+		// Draw the filled square
+		FillRect(x-size/2, y - size / 2, size, size, color);
 	}
 };
