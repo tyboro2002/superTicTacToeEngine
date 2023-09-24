@@ -27,11 +27,20 @@ class SuperTicTacToeGame : public olc::PixelGameEngine{
 
 	std::vector<std::vector<olc::vi2d>> gridPositions;
 
+	int lastSubSquare = -1;
+
+	bool gameWon = false;
+
 	SymbolOpt PlayingPlayer = XOpt;
 	SymbolOpt gameState[10][9];
 public:
 	SuperTicTacToeGame(){
 		sAppName = "SuperTicTacToeGame";
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 9; ++j) {
+				gameState[i][j] = SymbolOpt::_;
+			}
+		}
 	}
 
 public:
@@ -49,7 +58,7 @@ public:
 		gridPositions.push_back(gridPointsG);
 		gridPositions.push_back(gridPointsH);
 		gridPositions.push_back(gridPointsI);
-		gridPositions.push_back(gridPointsSuper);
+		//gridPositions.push_back(gridPointsSuper);
 		return true;
 	}
 
@@ -78,17 +87,26 @@ public:
 			}
 			// Print the closest point
 			std::cout << "Closest Point: (" << closestPoint.x << ", " << closestPoint.y << ")" << std::endl;
-			placeSymbol(closestPoint.x, closestPoint.y, PlayingPlayer);
-			swapPlayingPlayer();
+			if (closestPoint.x != 9 && gameState[closestPoint.x][closestPoint.y] == _ && gameState[9][closestPoint.x] == _ && gameWon == false) {
+				// Use std::find to check if the targetPoint is in the vector
+				std::vector<olc::vi2d> points = getPosibleMoves();
+				auto it = std::find(points.begin(), points.end(), closestPoint);
+				if (it != points.end()) {
+					placeSymbol(closestPoint.x, closestPoint.y, PlayingPlayer);
+					swapPlayingPlayer();
+					fillSuperGame();
+					lastSubSquare = closestPoint.y;
+					drawPosibleMoves();
+					drawGrids(18, 18);
+					checkGameOver();
+				}
+			}
 		}
-		drawGrids(18, 18);
 		return true;
 	}
 
-	bool placeSymbol(int square, int subSquare, SymbolOpt symbool) {
-		if (gameState[square][subSquare] == _) return false;
+	void placeSymbol(int square, int subSquare, SymbolOpt symbool) {
 		gameState[square][subSquare] = symbool;
-		return true;
 	}
 private:
 	std::vector<olc::vi2d> drawGrid(int upperLeftX, int upperLeftY, int height, int width) {
@@ -214,5 +232,106 @@ private:
 	void swapPlayingPlayer() {
 		if (PlayingPlayer == XOpt) PlayingPlayer = OOpt;
 		else PlayingPlayer = XOpt;
+	}
+
+	SymbolOpt checkWonSquare(SymbolOpt gameState[9]) {
+		// horizontal lines
+		if (gameState[0] != _ && gameState[0] == gameState[1] && gameState[1] == gameState[2]) return gameState[0]; //top line
+		if (gameState[3] != _ && gameState[3] == gameState[4] && gameState[4] == gameState[5]) return gameState[3]; // middle line
+		if (gameState[6] != _ && gameState[6] == gameState[7] && gameState[7] == gameState[8]) return gameState[6]; // bottom line
+		// vertical lines
+		if (gameState[0] != _ && gameState[0] == gameState[3] && gameState[3] == gameState[6]) return gameState[0]; // top line
+		if (gameState[1] != _ && gameState[1] == gameState[4] && gameState[4] == gameState[7]) return gameState[1]; // middle line
+		if (gameState[2] != _ && gameState[2] == gameState[5] && gameState[5] == gameState[8]) return gameState[2]; // bottom line
+
+		// diagonal lines
+		if (gameState[0] != _ && gameState[0] == gameState[4] && gameState[4] == gameState[8]) return gameState[0]; // top left to right bottom line
+		if (gameState[2] != _ && gameState[2] == gameState[4] && gameState[4] == gameState[6]) return gameState[2]; // top right to left bottom line
+		return _;
+	}
+
+	void checkGameOver() {
+		int firstIndex = -1;
+		int secondIndex = -1;
+		// horizontal lines
+		if (gameState[9][0] != _ && gameState[9][0] == gameState[9][1] && gameState[9][1] == gameState[9][2]) { firstIndex = 0; secondIndex = 2; } //top line
+		else if (gameState[9][3] != _ && gameState[9][3] == gameState[9][4] && gameState[9][4] == gameState[9][5]) { firstIndex = 3; secondIndex = 5; } // middle line
+		else if (gameState[9][6] != _ && gameState[9][6] == gameState[9][7] && gameState[9][7] == gameState[9][8]) { firstIndex = 6; secondIndex = 8; } // bottom line
+		// vertical lines
+		else if (gameState[9][0] != _ && gameState[9][0] == gameState[9][3] && gameState[9][3] == gameState[9][6]) { firstIndex = 0; secondIndex = 6; } // top line
+		else if (gameState[9][1] != _ && gameState[9][1] == gameState[9][4] && gameState[9][4] == gameState[9][7]) { firstIndex = 1; secondIndex = 7; } // middle line
+		else if (gameState[9][2] != _ && gameState[9][2] == gameState[9][5] && gameState[9][5] == gameState[9][8]) { firstIndex = 2; secondIndex = 8; } // bottom line
+		// diagonal lines
+		else if (gameState[9][0] != _ && gameState[9][0] == gameState[9][4] && gameState[9][4] == gameState[9][8]) { firstIndex = 0; secondIndex = 8; } // top left to right bottom line
+		else if (gameState[9][2] != _ && gameState[9][2] == gameState[9][4] && gameState[9][4] == gameState[9][6]) { firstIndex = 2; secondIndex = 6; } // top right to left bottom line
+		if (firstIndex != -1 && secondIndex != -1) {
+			DrawLine(gridPointsSuper.at(firstIndex).x, gridPointsSuper.at(firstIndex).y, gridPointsSuper.at(secondIndex).x, gridPointsSuper.at(secondIndex).y, olc::MAGENTA);
+			gameWon = true;
+		}
+	}
+
+
+	void fillSuperGame() {
+		for (int i = 0; i < 9; i++) {
+			placeSymbol(9, i, checkWonSquare(gameState[i]));
+		}
+	}
+
+	std::vector<olc::vi2d> getPosibleMoves() {
+		std::vector<olc::vi2d> posMoves;
+		for (int i = 0; i < 9; i++) {
+			if (lastSubSquare == i && (checkWonSquare(gameState[i]) == _)) {
+				for (int j = 0; j < 9; j++) {
+					if (gameState[i][j] == _) posMoves.push_back(olc::vi2d(i, j));
+				}
+			}
+		}
+		if (posMoves.size() == 0) {
+			for (int i = 0; i < 9; i++) {
+				if (checkWonSquare(gameState[i]) == _) {
+					for (int j = 0; j < 9; j++) {
+						if (gameState[i][j] == _) posMoves.push_back(olc::vi2d(i, j));
+					}
+				}
+			}
+		}
+		return posMoves;
+	}
+
+	void drawGridPoint(int square, int subsquare, olc::Pixel color) {
+		if (square == 0) {
+			Draw(gridPointsA.at(subsquare), color);
+		}else if (square == 1) {
+			Draw(gridPointsB.at(subsquare), color);
+		}else if (square == 2) {
+			Draw(gridPointsC.at(subsquare), color);
+		}else if (square == 3) {
+			Draw(gridPointsD.at(subsquare), color);
+		}else if (square == 4) {
+			Draw(gridPointsE.at(subsquare), color);
+		}else if (square == 5) {
+			Draw(gridPointsF.at(subsquare), color);
+		}else if (square == 6) {
+			Draw(gridPointsG.at(subsquare), color);
+		}else if (square == 7) {
+			Draw(gridPointsH.at(subsquare), color);
+		}else if (square == 8) {
+			Draw(gridPointsI.at(subsquare), color);
+		}
+
+	}
+
+	void drawPosibleMoves() {
+		// reset all moves to a black square
+		for (const std::vector<olc::vi2d>& row : gridPositions){
+			for (const olc::vi2d& point : row) {
+				Draw(point, olc::BLACK);
+			}
+		}
+
+		std::vector<olc::vi2d> moves = getPosibleMoves();
+		for (olc::vi2d& point : moves) {
+			drawGridPoint(point.x, point.y, olc::RED);
+		}
 	}
 };
